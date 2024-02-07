@@ -24,6 +24,6 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-.env
+.env*
 .idea/
 .phpstorm.meta.php/
