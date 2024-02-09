@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<style>
+
+</style>
+
+<h1>Inscription</h1>
+
+{{ form_start(form) }}
+{{ form_row(form.email) }}
+{{ form_row(form.password.first, {'label': 'Password'}) }}
+{{ form_row(form.save) }}
+{{ form_end(form) }}
+{% endblock %}
