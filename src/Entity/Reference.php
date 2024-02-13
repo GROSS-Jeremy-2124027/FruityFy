@@ -20,8 +20,7 @@ class Reference
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
-
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $year = null;
 
     #[ORM\ManyToOne(inversedBy: 'referencesList')]
@@ -38,6 +37,9 @@ class Reference
 
     #[ORM\OneToMany(targetEntity: ReferenceFormat::class, mappedBy: 'reference', orphanRemoval: true)]
     private Collection $referenceFormats;
+
+    #[ORM\Column(length: 255)]
+    private ?string $discogsId = null;
 
     public function __construct()
     {
@@ -211,6 +213,18 @@ class Reference
                 $referenceFormat->setReference(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDiscogsId(): ?string
+    {
+        return $this->discogsId;
+    }
+
+    public function setDiscogsId(string $discogsId): static
+    {
+        $this->discogsId = $discogsId;
 
         return $this;
     }

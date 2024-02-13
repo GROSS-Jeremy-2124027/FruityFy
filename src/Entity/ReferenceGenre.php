@@ -17,10 +17,6 @@ class ReferenceGenre
     #[ORM\JoinColumn(nullable: false)]
     private ?Genre $genre = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getReference(): ?Reference
     {

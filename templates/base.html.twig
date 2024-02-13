@@ -3,6 +3,48 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="..." crossorigin="anonymous" />
+
+        <script>
+            function ajouter(id) {
+                liElement = document.getElementById(id);
+                var nameElement = liElement.querySelector('.name');
+                var yearElement = liElement.querySelector('.year');
+                var genreElement = liElement.querySelector('.genre');
+                var formatElement = liElement.querySelector('.format');
+
+                // Vérifier si les éléments existent avant d'accéder à leur contenu
+                var name = nameElement ? nameElement.textContent.trim() : '';
+                var year = yearElement ? yearElement.textContent.trim() : '';
+                var genre = genreElement ? genreElement.textContent.trim() : '';
+                var format = formatElement ? formatElement.textContent.trim() : '';
+                var action;
+                var iconElement = liElement.querySelector('i.fa-solid');
+                if (iconElement && iconElement.classList.contains('fa-plus')) {
+                    action = 'like';
+                }
+                else if (iconElement && iconElement.classList.contains('fa-plus')){
+                    action = 'unlike';
+                }
+                fetch(`/like/${action}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Définir le type de contenu comme JSON
+                    },
+                    body: JSON.stringify({ id: id, action: action, genre: genre, year: year, name: name, format: format }) // Convertir les données en JSON
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            iconElement.classList.toggle('fa-plus');
+                            iconElement.classList.toggle('fa-trash');
+                        }
+                    }).catch(error => console.error('Error:', error));
+            }
+
+
+
+        </script>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
         {% endblock %}
