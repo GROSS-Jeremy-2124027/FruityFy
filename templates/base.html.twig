@@ -23,7 +23,7 @@
                 if (iconElement && iconElement.classList.contains('fa-plus')) {
                     action = 'like';
                 }
-                else if (iconElement && iconElement.classList.contains('fa-plus')){
+                else if (iconElement && iconElement.classList.contains('fa-trash')){
                     action = 'unlike';
                 }
                 fetch(`/like/${action}`, {
@@ -36,7 +36,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            iconElement.classList.toggle('fa-plus');
+                            // iconElement.classList.toggle('fa-plus');
                             iconElement.classList.toggle('fa-trash');
                         }
                     }).catch(error => console.error('Error:', error));
@@ -54,6 +54,11 @@
         {% endblock %}
     </head>
     <body>
+    {% if app.user %}
+        <div class="mb-3">
+            <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>

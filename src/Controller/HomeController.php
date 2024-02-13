@@ -58,6 +58,17 @@ class HomeController extends AbstractController
             $referenceGenre->setGenre($newGenre);
             $entityManager->persist($referenceGenre);
         }
+
+        $entityManagerReferenceUser = $entityManager->getRepository(ReferenceUser::class);
+        $referenceUser = $entityManagerReferenceUser->findOneBy(["reference" => $reference, "user" => $this->getUser()]);
+
+        if ($referenceUser == null) {
+            $referenceUser = new ReferenceUser();
+            $referenceUser->setReference($reference);
+            $referenceUser->setUser($this->getUser());
+            $entityManager->persist($referenceUser);
+        }
+
 //        $entityManagerReferenceUser = $entityManager->getRepository(Refer::class);
         $entityManager->flush();
         return new JsonResponse(['success' => true, 'id' => $id, 'action' => $action]);
