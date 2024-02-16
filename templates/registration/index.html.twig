@@ -3,15 +3,38 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-<style>
+    <div class="login-container">
+        <div id="label-connection" >
+            <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
+            <div id="divider-login"></div>
+        </div>
 
-</style>
+        <img id="logo" src="" alt="logo fruityfy"/>
 
-<h1>Inscription</h1>
+        {{ form_start(form) }}
 
-{{ form_start(form) }}
-{{ form_row(form.email) }}
-{{ form_row(form.password.first, {'label': 'Password'}) }}
-{{ form_row(form.save) }}
-{{ form_end(form) }}
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <!-- Label et input pour l'email' -->
+        {{ form_row(form.email, {'label': 'Email', 'attr': {'class': 'input-group mb-3'}})}}
+
+        <!-- Label et input pour le mot de passe -->
+        {{ form_row(form.password, {'label': 'Mot de passe', 'attr': {'class': 'input-group mb-3'}}) }}
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        {{ form_row(form.save) }}
+
+        <span id="registration-link">Déja un compte ? <a href="{{ path('app_login') }}"> Se connecter</a></span>
+
+        {{ form_end(form) }}
+
+    </div>
+
 {% endblock %}
