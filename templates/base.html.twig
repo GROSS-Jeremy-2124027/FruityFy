@@ -6,32 +6,36 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="..." crossorigin="anonymous" />
 
         <script>
-            function ajouter(id) {
-                liElement = document.getElementById(id);
+            function ajouter(id, type, fruit, formats = null) {
+                var liElement = document.getElementById(id);
                 var nameElement = liElement.querySelector('.name');
-                var yearElement = liElement.querySelector('.year');
-                var genreElement = liElement.querySelector('.genre');
-                var formatElement = liElement.querySelector('.format');
-
-                // Vérifier si les éléments existent avant d'accéder à leur contenu
                 var name = nameElement ? nameElement.textContent.trim() : '';
-                var year = yearElement ? yearElement.textContent.trim() : '';
-                var genre = genreElement ? genreElement.textContent.trim() : '';
-                var format = formatElement ? formatElement.textContent.trim() : '';
+
+                if(type != "artist") {
+                    var yearElement = liElement.querySelector('.year');
+                    // var genreElement = liElement.querySelector('.genre');
+                    // var formatElement = liElement.querySelector('.format');
+
+                    // Vérifier si les éléments existent avant d'accéder à leur contenu
+                    var year = yearElement ? yearElement.textContent.trim() : '';
+                    // var genre = genreElement ? genreElement.textContent.trim() : '';
+                    // var format = formatElement ? formatElement.textContent.trim() : '';
+                }
+
                 var action;
                 var iconElement = liElement.querySelector('i.fa-solid');
                 if (iconElement && iconElement.classList.contains('fa-plus')) {
                     action = 'like';
                 }
-                else if (iconElement && iconElement.classList.contains('fa-plus')){
+                else if (iconElement && iconElement.classList.contains('fa-trash')){
                     action = 'unlike';
                 }
-                fetch(`/like/${action}`, {
+                fetch(`/like/${action}/${type}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json' // Définir le type de contenu comme JSON
                     },
-                    body: JSON.stringify({ id: id, action: action, genre: genre, year: year, name: name, format: format }) // Convertir les données en JSON
+                    body: JSON.stringify({ id: id, action: action, year: year, name: name, formats: formats, fruit: fruit}) // Convertir les données en JSON
                 })
                     .then(response => response.json())
                     .then(data => {

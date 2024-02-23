@@ -21,12 +21,17 @@ class Genre
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: ReferenceGenre::class, mappedBy: 'genre', orphanRemoval: true)]
-    private Collection $referenceGenres;
+
+    #[ORM\OneToMany(targetEntity: AlbumGenre::class, mappedBy: 'genre', orphanRemoval: true)]
+    private Collection $albumGenres;
+
+    #[ORM\OneToMany(targetEntity: RechercheFruit::class, mappedBy: 'genre')]
+    private Collection $rechercheFruits;
 
     public function __construct()
     {
-        $this->referenceGenres = new ArrayCollection();
+        $this->albumGenres = new ArrayCollection();
+        $this->rechercheFruits = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -54,29 +59,59 @@ class Genre
     }
 
     /**
-     * @return Collection<int, ReferenceGenre>
+     * @return Collection<int, AlbumGenre>
      */
-    public function getReferenceGenres(): Collection
+    public function getAlbumGenres(): Collection
     {
-        return $this->referenceGenres;
+        return $this->albumGenres;
     }
 
-    public function addReferenceGenre(ReferenceGenre $referenceGenre): static
+    public function addAlbumGenre(AlbumGenre $albumGenre): static
     {
-        if (!$this->referenceGenres->contains($referenceGenre)) {
-            $this->referenceGenres->add($referenceGenre);
-            $referenceGenre->setGenre($this);
+        if (!$this->albumGenres->contains($albumGenre)) {
+            $this->albumGenres->add($albumGenre);
+            $albumGenre->setGenre($this);
         }
 
         return $this;
     }
 
-    public function removeReferenceGenre(ReferenceGenre $referenceGenre): static
+    public function removeAlbumGenre(AlbumGenre $albumGenre): static
     {
-        if ($this->referenceGenres->removeElement($referenceGenre)) {
+        if ($this->albumGenres->removeElement($albumGenre)) {
             // set the owning side to null (unless already changed)
-            if ($referenceGenre->getGenre() === $this) {
-                $referenceGenre->setGenre(null);
+            if ($albumGenre->getGenre() === $this) {
+                $albumGenre->setGenre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RechercheFruit>
+     */
+    public function getRechercheFruits(): Collection
+    {
+        return $this->rechercheFruits;
+    }
+
+    public function addRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if (!$this->rechercheFruits->contains($rechercheFruit)) {
+            $this->rechercheFruits->add($rechercheFruit);
+            $rechercheFruit->setGenre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if ($this->rechercheFruits->removeElement($rechercheFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($rechercheFruit->getGenre() === $this) {
+                $rechercheFruit->setGenre(null);
             }
         }
 

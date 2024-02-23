@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche de références musicales By Fruitify{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1 style="display: flex; justify-content: space-between"> <div> Recherche de références musicales By </div> <div style="color: #555555;">Fruitify</div></h1>
+    Liste des références
+    {{ form_start(fruitForm) }}
+    {{ form_row(fruitForm.fruit) }}
+    <button type="submit">valider</button>
+    {{ form_end(fruitForm) }}
+    <ul>
+        {% for result in results %}
+            <li id="{{ result.id }}">
+                <button onclick="ajouter('{{ result.id}}', '{{ result.type }}', '{{ fruit }}', '{{ result.formats }}',);"><i class="fa-solid fa-plus"></i></button>
+                <div class="name">{{ result.title }} {% if result.year %} - {{ result.year }} {% endif %}</div>
+                <div style="display: none" class="cover">{{ result.coverImage }}</div>
+                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>
+                {% if  result.genres|length > 0 %}
+                    Genres :
+                    {% for genre in result.genres %}
+                        <div class="genre">{{ genre }}</div>
+                    {% endfor %}
+                    <br/>
+                {% endif %}
+                {% if result.formatsArray|length > 0 %}
+                    Formats disponibles :
+                    {% for format in result.formatsArray %}
+                        <div class="format">{{ format }}</div>
+                    {% endfor %}
+                {% endif %}
+
+{#                <div class="format">{{ result.label }}</div>#}
+            </li>
+        {% endfor %}
+    </ul>
+{#    #}{# Formulaire de pagination #}
+{#    {{ form_start(paginationForm) }}#}
+{#    {{ form_widget(paginationForm.page) }}#}
+{#    <button type="submit">Page suivante</button>#}
+{#    {{ form_end(paginationForm) }}#}
+</div>
+{% endblock %}

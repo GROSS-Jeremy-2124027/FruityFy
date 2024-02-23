@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240212091009 extends AbstractMigration
+final class Version20240221165957 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20240212091009 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE reference ADD discogs_id VARCHAR(255) NOT NULL, DROP discogs_reference');
+        $this->addSql('ALTER TABLE recherche_fruit ADD year INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE reference ADD discogs_reference VARCHAR(60) NOT NULL, DROP discogs_id');
+        $this->addSql('ALTER TABLE recherche_fruit DROP year');
     }
 }

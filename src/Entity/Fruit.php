@@ -18,14 +18,23 @@ class Fruit
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    public ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: ReferenceFruit::class, mappedBy: 'fruit', orphanRemoval: true)]
-    private Collection $referenceFruits;
+    #[ORM\OneToMany(targetEntity: AlbumFruit::class, mappedBy: 'fruit', orphanRemoval: true)]
+    private Collection $albumFruits;
+
+    #[ORM\OneToMany(targetEntity: ArtisteFruit::class, mappedBy: 'fruit', orphanRemoval: true)]
+    private Collection $artisteFruits;
+
+    #[ORM\OneToMany(targetEntity: RechercheFruit::class, mappedBy: 'fruit')]
+    private Collection $rechercheFruits;
+
 
     public function __construct()
     {
-        $this->referenceFruits = new ArrayCollection();
+        $this->albumFruits = new ArrayCollection();
+        $this->artisteFruits = new ArrayCollection();
+        $this->rechercheFruits = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -53,29 +62,89 @@ class Fruit
     }
 
     /**
-     * @return Collection<int, ReferenceFruit>
+     * @return Collection<int, AlbumFruit>
      */
-    public function getReferenceFruits(): Collection
+    public function getAlbumFruits(): Collection
     {
-        return $this->referenceFruits;
+        return $this->albumFruits;
     }
 
-    public function addReferenceFruit(ReferenceFruit $referenceFruit): static
+    public function addAlbumFruit(AlbumFruit $albumFruit): static
     {
-        if (!$this->referenceFruits->contains($referenceFruit)) {
-            $this->referenceFruits->add($referenceFruit);
-            $referenceFruit->setFruit($this);
+        if (!$this->albumFruits->contains($albumFruit)) {
+            $this->albumFruits->add($albumFruit);
+            $albumFruit->setFruit($this);
         }
 
         return $this;
     }
 
-    public function removeReferenceFruit(ReferenceFruit $referenceFruit): static
+    public function removeAlbumFruit(AlbumFruit $albumFruit): static
     {
-        if ($this->referenceFruits->removeElement($referenceFruit)) {
+        if ($this->albumFruits->removeElement($albumFruit)) {
             // set the owning side to null (unless already changed)
-            if ($referenceFruit->getFruit() === $this) {
-                $referenceFruit->setFruit(null);
+            if ($albumFruit->getFruit() === $this) {
+                $albumFruit->setFruit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtisteFruit>
+     */
+    public function getArtisteFruits(): Collection
+    {
+        return $this->artisteFruits;
+    }
+
+    public function addArtisteFruit(ArtisteFruit $artisteFruit): static
+    {
+        if (!$this->artisteFruits->contains($artisteFruit)) {
+            $this->artisteFruits->add($artisteFruit);
+            $artisteFruit->setFruit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArtisteFruit(ArtisteFruit $artisteFruit): static
+    {
+        if ($this->artisteFruits->removeElement($artisteFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($artisteFruit->getFruit() === $this) {
+                $artisteFruit->setFruit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RechercheFruit>
+     */
+    public function getRechercheFruits(): Collection
+    {
+        return $this->rechercheFruits;
+    }
+
+    public function addRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if (!$this->rechercheFruits->contains($rechercheFruit)) {
+            $this->rechercheFruits->add($rechercheFruit);
+            $rechercheFruit->setFruit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if ($this->rechercheFruits->removeElement($rechercheFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($rechercheFruit->getFruit() === $this) {
+                $rechercheFruit->setFruit(null);
             }
         }
 
