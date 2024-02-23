@@ -4,42 +4,59 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .container { display: flex; flex-direction: row; justify-content: space-evenly;}
 </style>
 
-<div class="example-wrapper">
-    <h1 style="display: flex; justify-content: space-between"> <div> Recherche de références musicales By </div> <div style="color: #555555;">Fruitify</div></h1>
-    Liste des références
-    {{ form_start(fruitForm) }}
-    {{ form_row(fruitForm.fruit) }}
-    <button type="submit">valider</button>
-    {{ form_end(fruitForm) }}
-    <ul>
-        {% for result in results %}
-            <li id="{{ result.id }}">
-                <button onclick="ajouter('{{ result.id}}', '{{ result.type }}', '{{ fruit }}', '{{ result.formats }}',);"><i class="fa-solid fa-plus"></i></button>
-                <div class="name">{{ result.title }} {% if result.year %} - {{ result.year }} {% endif %}</div>
-                <div style="display: none" class="cover">{{ result.coverImage }}</div>
-                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>
-                {% if  result.genres|length > 0 %}
-                    Genres :
-                    {% for genre in result.genres %}
-                        <div class="genre">{{ genre }}</div>
-                    {% endfor %}
-                    <br/>
-                {% endif %}
-                {% if result.formatsArray|length > 0 %}
-                    Formats disponibles :
-                    {% for format in result.formatsArray %}
-                        <div class="format">{{ format }}</div>
-                    {% endfor %}
-                {% endif %}
+<div class="container">
+    <section>
+        <h1 style="display: flex; justify-content: space-between"> Rechercher </h1>
+        <article class="w-100">
+            {{ form_start(fruitForm) }}
+            {{ form_row(fruitForm.fruit) }}
+            {{ form_row(fruitForm.type) }}
+            {{ form_row(fruitForm.genre) }}
+            {{ form_row(fruitForm.format) }}
+            {{ form_row(fruitForm.artiste) }}
+            {{ form_row(fruitForm.year) }}
+            <button class="btn btn-info" type="submit">Valider</button>
+            {{ form_end(fruitForm) }}
+        </article>
+    </section>
+    <section>
+        <ul class="d-flex flex-row flex-wrap">
+            {% for result in results %}
+                <li id="{{ result.id }}" class="w-25 p-2 d-flex flex-column">
+                    <button class="btn btn-info m-1" style="max-width: 50px" onclick="ajouter('{{ result.id}}', '{{ result.type }}', '{{ fruit }}', '{{ result.formats }}',);"><i class="fa-solid fa-plus"></i></button>
+                    {% if result.coverImage == "" %}
+                        <img style="width: 150px; height: 150px; object-fit: cover" src="{{ asset('../../assets/img/disque.png') }}">
+                    {% else %}
+                        <img style="width: 150px; height: 150px; object-fit: cover" src="{{ result.coverImage }}">
+                    {% endif %}
+                    <span class="name">{{ result.title }} {% if result.year %} - {{ result.year }} {% endif %}</span>
+                    {% if  result.genres|length > 0 %}
+                        <span style="text-decoration: underline">
+                            Genres :
+                        </span>
+                        {% for genre in result.genres %}
+                            <span class="genre">{{ genre }}</span>
+                        {% endfor %}
+                        <br/>
+                    {% endif %}
+                    {% if result.formatsArray|length > 0 %}
+                        <span style="text-decoration: underline">
+                            Formats disponibles :
+                        </span>
+                        {% for format in result.formatsArray %}
+                            <span class="format">{{ format }}</span>
+                        {% endfor %}
+                    {% endif %}
 
-{#                <div class="format">{{ result.label }}</div>#}
-            </li>
-        {% endfor %}
-    </ul>
+                    {#                <div class="format">{{ result.label }}</div>#}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
 {#    #}{# Formulaire de pagination #}
 {#    {{ form_start(paginationForm) }}#}
 {#    {{ form_widget(paginationForm.page) }}#}
