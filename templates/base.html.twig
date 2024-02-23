@@ -77,11 +77,13 @@
 
                 results.forEach(function(result) {
                     var liElement = document.createElement('li');
+                    liElement.classList.add("p-2", "d-flex", "flex-column")
                     liElement.id = result.id;
 
                     var buttonElement = document.createElement('button');
                     buttonElement.setAttribute('onclick', "ajouter('" + result.id + "', '" + result.type + "', '" + fruit + "', '" + result.formats + "')");
                     buttonElement.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                    buttonElement.style.maxWidth = '50px'
                     buttonElement.classList.add("btn", "btn-info", "m-1");
                     liElement.appendChild(buttonElement);
 
@@ -92,10 +94,9 @@
                     liElement.appendChild(coverElement);
 
                     var imgElement = document.createElement('img');
-                    imgElement.style.height = '200px';
-                    imgElement.style.width = '200px';
-                    imgElement.style.maxHeight = '100%';
-                    imgElement.style.maxWidth = '100%';
+                    imgElement.style.height = '150px';
+                    imgElement.style.width = '150px';
+                    imgElement.style.objectFit = 'cover';
                     imgElement.src = result.coverImage;
                     var imgDiv = document.createElement('div');
                     imgDiv.appendChild(imgElement);

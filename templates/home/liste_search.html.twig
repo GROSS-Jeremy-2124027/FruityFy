@@ -57,20 +57,20 @@
                     {% endif %}
                     <span class="name">{{ result.title }} {% if result.year %} - {{ result.year }} {% endif %}</span>
                     {% if  result.genres|length > 0 %}
-                        <span style="text-decoration: underline">
-                            Genres :
-                        </span>
+{#                        <span style="text-decoration: underline">#}
+{#                            Genres :#}
+{#                        </span>#}
                         {% for genre in result.genres %}
-                            <span class="genre">{{ genre }}</span>
+                            <span class="genre text-info">{{ genre }}</span>
                         {% endfor %}
                         <br/>
                     {% endif %}
                     {% if result.formatsArray|length > 0 %}
-                        <span style="text-decoration: underline">
-                            Formats disponibles :
-                        </span>
+{#                        <span style="text-decoration: underline">#}
+{#                            Formats disponibles :#}
+{#                        </span>#}
                         {% for format in result.formatsArray %}
-                            <span class="format">{{ format }}</span>
+                            <span class="format text-info-emphasis">{{ format }}</span>
                         {% endfor %}
                     {% endif %}
 
