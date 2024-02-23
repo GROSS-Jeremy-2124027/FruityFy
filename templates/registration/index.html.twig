@@ -3,38 +3,60 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <div class="login-container">
-        <div id="label-connection" >
+    <div class="inscription-container d-flex justify-content-between align-items-center">
+        <div id="label-inscription" class="text-light ms-5">
             <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
-            <div id="divider-login"></div>
+            <div id="divider"></div>
         </div>
+        <img id="logo" src="{{ asset('img/fruityfy.png') }}" alt="logo fruityfy" class="img-fluid me-5" style="max-width: 100px;">
+    </div>
 
-        <img id="logo" src="" alt="logo fruityfy"/>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4 border border-info p-4 rounded mt-5">
 
-        {{ form_start(form) }}
+                {{ form_start(form) }}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <!-- Label et input pour l'email' -->
+
+                <div class="mb-4">
+                    {{ form_row(form.email, {'label': 'Email', 'label_attr': {'class': 'text-light form-label'}, 'attr': {'class': 'form-control mb-4'}}) }}
+                </div>
+
+                <!-- Label et input pour le mot de passe -->
+
+                <div class="mb-4">
+                    {{ form_row(form.password.first, {'label': 'Mot de passe', 'label_attr': {'class': 'text-light form-label'}, 'attr': {'class': 'form-control'}}) }}
+
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+                </div>
+
+                <div class="mb-4">
+                    {{ form_row(form.password.second, {'label': 'Confirmation du mot de passe', 'label_attr': {'class': 'text-light form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="text-center mt-5">
+                    {{ form_row(form.save, {'attr': {'class': 'btn btn-lg btn-info text-light'}}) }}
+                </div>
+
+                <div class="text-center mt-5">
+                    <span id="login-link" class="text-light">Déja un compte ? <a class="link-offset-2 link-underline link-underline-opacity-0 text-info" href="{{ path('app_login') }}"> Se connecter</a></span>
+                </div>
+
+
+
+                {{ form_end(form) }}
             </div>
-        {% endif %}
-
-        <!-- Label et input pour l'email' -->
-        {{ form_row(form.email, {'label': 'Email', 'attr': {'class': 'input-group mb-3'}})}}
-
-        <!-- Label et input pour le mot de passe -->
-        {{ form_row(form.password, {'label': 'Mot de passe', 'attr': {'class': 'input-group mb-3'}}) }}
-
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
-
-        {{ form_row(form.save) }}
-
-        <span id="registration-link">Déja un compte ? <a href="{{ path('app_login') }}"> Se connecter</a></span>
-
-        {{ form_end(form) }}
-
+        </div>
     </div>
 
 {% endblock %}

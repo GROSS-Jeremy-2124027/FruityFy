@@ -71,13 +71,13 @@ body {
 /*    margin: 20px;*/
 /*}*/
 
-/*#divider-login{*/
-/*    width: 8vw;*/
-/*    height: 10px;*/
-/*    background-color: #59d2fe;*/
-/*    border-top-right-radius: 10px;*/
-/*    border-bottom-right-radius: 10px;*/
-/*}*/
+#divider-login{
+    width: 8vw;
+    height: 10px;
+    background-color: #59d2fe;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
 /*#logo{*/
 /*    position: fixed;*/
