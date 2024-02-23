@@ -5,6 +5,18 @@
 {% block body %}
 <style>
     .container { display: flex; flex-direction: row; justify-content: space-evenly;}
+
+    li { width: 25% }
+
+    @media screen and (max-width: 990px) {
+        .container { flex-direction: column }
+
+        li { width: 200px }
+        /*img{*/
+        /*    width: 15vw !important;*/
+        /*    height: 15vw !important;*/
+        /*}*/
+    }
 </style>
 
 <div class="container">
@@ -23,12 +35,23 @@
         </article>
     </section>
     <section>
-        <ul class="d-flex flex-row flex-wrap">
+        <div class="ms-4" id="pagination">
+            {% if page - 1 >= 1 %}
+                <button class="btn btn-info m-1" onclick="chargerPageSuivante('precedent', {{ page - 1}} , {{ pages }}, '{{ fruit }}')">Page précédente</button> <!--ajouter -->
+            {% endif %}
+            {% if page + 1 <= pages %}
+                <button class="btn btn-info m-1" onclick="chargerPageSuivante('suivant', {{ page + 1}} , {{ pages }}, '{{ fruit }}')">Page suivante</button> <!--ajouter -->
+            {% endif %}
+            <div id="etatPagination"> {{ page }} / {{ pages }} </div>
+        </div>
+        <ul class="d-flex flex-row justify-content-center flex-wrap">
             {% for result in results %}
-                <li id="{{ result.id }}" class="w-25 p-2 d-flex flex-column">
+                <li id="{{ result.id }}" class="p-2 d-flex flex-column">
                     <button class="btn btn-info m-1" style="max-width: 50px" onclick="ajouter('{{ result.id}}', '{{ result.type }}', '{{ fruit }}', '{{ result.formats }}',);"><i class="fa-solid fa-plus"></i></button>
-                    {% if result.coverImage == "" %}
-                        <img style="width: 150px; height: 150px; object-fit: cover" src="{{ asset('../../assets/img/disque.png') }}">
+                    {% if result.coverImage == "" and result.type == "master" %}
+                        <img style="width: 150px; height: 150px; object-fit: cover" src="{{ asset('img/disque.png') }}">
+                    {% elseif result.coverImage == "" and result.type == "artist" %}
+                        <img style="width: 150px; height: 150px; object-fit: cover" src="{{ asset('img/tete.jpg') }}">
                     {% else %}
                         <img style="width: 150px; height: 150px; object-fit: cover" src="{{ result.coverImage }}">
                     {% endif %}

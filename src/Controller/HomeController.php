@@ -62,35 +62,35 @@ class HomeController extends AbstractController
      * @throws ClientExceptionInterface
      */
     #[Route('/search', name: 'app_search')]
-    public function search(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager, ApiDiscogsService $apiDiscogsService, string $S_type='master'): Response
-    {   $rechercheFruit = new RechercheFruit();
-        if($request->get('fruitId') != null) {
+    public function search(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager, ApiDiscogsService $apiDiscogsService, string $S_type = 'master'): Response
+    {
+        $rechercheFruit = new RechercheFruit();
+        if ($request->get('fruitId') != null) {
             $fruit = $entityManager->getRepository(Fruit::class)->find($request->get('fruitId'));
             $rechercheFruit->setFruit($fruit);
-        }
-        else {
+        } else {
             $fruit = $entityManager->getRepository(Fruit::class)->findOneBy(["name" => "banane"]);
             $rechercheFruit->setFruit($fruit);
         }
 
-        if($request->get('genreId') != null) {
+        if ($request->get('genreId') != null) {
             $genre = $entityManager->getRepository(Genre::class)->find($request->get('genreId'));
             $rechercheFruit->setGenre($genre);
         }
 
-        if($request->get('formatId') != null) {
+        if ($request->get('formatId') != null) {
             $format = $entityManager->getRepository(Format::class)->find($request->get('formatId'));
             $rechercheFruit->setFormat($format);
         }
 
-        if($request->get('artisteId') != null) {
+        if ($request->get('artisteId') != null) {
             $artiste = $entityManager->getRepository(Artiste::class)->find($request->get('artisteId'));
             $rechercheFruit->setArtiste($artiste);
         }
-        if($request->get('type') != null) {
+        if ($request->get('type') != null) {
             $rechercheFruit->setType($request->get('type'));
         }
-        if($request->get('year') != null) {
+        if ($request->get('year') != null) {
             $rechercheFruit->setYear($request->get('year'));
         }
 
@@ -100,12 +100,12 @@ class HomeController extends AbstractController
         if ($fruitForm->isSubmitted() && $fruitForm->isValid()) {
             $fruit = $rechercheFruit->getFruit();
 
-            $genreId =  !empty($rechercheFruit->getGenre()) ? $rechercheFruit->getGenre()->getId() : "";
-            $formatId =  !empty($rechercheFruit->getFormat()) ? $rechercheFruit->getFormat()->getId() : "";
-            $artisteId =  !empty($rechercheFruit->getArtiste()) ? $rechercheFruit->getArtiste()->getId() : "";
+            $genreId = !empty($rechercheFruit->getGenre()) ? $rechercheFruit->getGenre()->getId() : "";
+            $formatId = !empty($rechercheFruit->getFormat()) ? $rechercheFruit->getFormat()->getId() : "";
+            $artisteId = !empty($rechercheFruit->getArtiste()) ? $rechercheFruit->getArtiste()->getId() : "";
 
-            return $this->redirectToRoute('app_search', ['fruitId'=>$fruit->getId(),
-                'genreId'=>$genreId, 'artisteId'=>$artisteId, 'type' => $rechercheFruit->getType(),
+            return $this->redirectToRoute('app_search', ['fruitId' => $fruit->getId(),
+                'genreId' => $genreId, 'artisteId' => $artisteId, 'type' => $rechercheFruit->getType(),
                 'year' => $rechercheFruit->getYear(), 'formatId' => $formatId]);
         }
 
@@ -116,39 +116,133 @@ class HomeController extends AbstractController
             $rechercheFruit->getYear(), $formatName);
 
         try {
-            if ($response->getStatusCode() != 200)
-            {
+            if ($response->getStatusCode() != 200) {
                 return [];
             }
             $reponses = $response->toArray()["results"];
+            $pagination = $response->toArray()["pagination"];
             $results = [];
-            foreach ($reponses as $response) {
+            foreach ($reponses as $reponse) {
                 $reponseUniform = array();
-                $reponseUniform["id"] = $response["id"];
-                $reponseUniform["title"] = $response["title"];
-                $reponseUniform["coverImage"] = $response["cover_image"];
+                $reponseUniform["id"] = $reponse["id"];
+                $reponseUniform["title"] = $reponse["title"];
+                $reponseUniform["coverImage"] = $reponse["thumb"];
 
-                $reponseUniform["genres"] = isset($response["genre"]) ? $response["genre"] : "";
-                $formats =  isset($response["format"]) ? $response["format"] : array();
-                if($response["type"] != "artist") {
-                    for($i=0;$i<count($formats); ++$i) {
+                $reponseUniform["genres"] = isset($reponse["genre"]) ? $reponse["genre"] : "";
+                $formats = isset($reponse["format"]) ? $reponse["format"] : array();
+                if ($reponse["type"] != "artist") {
+                    for ($i = 0; $i < count($formats); ++$i) {
                         $formats[$i] = str_replace('"', '', $formats[$i]);
                     }
                 }
                 $reponseUniform["formatsArray"] = $formats;
                 $reponseUniform["formats"] = json_encode($formats);
-                $reponseUniform["type"] = isset($response["type"]) ? $response["type"] : "";
-                $reponseUniform["year"] = isset($response["year"]) ? $response["year"] : "";
-                $reponseUniform["label"] = isset($response["label"]) ? $response["label"][0] : "";
+                $reponseUniform["type"] = isset($reponse["type"]) ? $reponse["type"] : "";
+                $reponseUniform["year"] = isset($reponse["year"]) ? $reponse["year"] : "";
+                $reponseUniform["label"] = isset($reponse["label"]) ? $reponse["label"][0] : "";
                 $results[] = $reponseUniform;
             }
 
             return $this->render('home/liste_search.html.twig', [
-                'controller_name' => 'HomeController', 'results' => $results, 'fruit'=> $fruit->getName(), 'entity'=>'artist',
-                'fruitForm' => $fruitForm->createView()// Passez le formulaire à Twig
+                'controller_name' => 'HomeController', 'results' => $results, 'fruit' => $fruit->getName(), 'entity' => 'artist',
+                'fruitForm' => $fruitForm->createView(), 'page' => $pagination['page'], 'pages' => $pagination['pages']// Passez la page en param
 
-            ]);        } catch (ExceptionInterface $e) {
+            ]);
+        } catch (ExceptionInterface $e) {
             return [];
+        }
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    #[Route('/searchPagi', name: 'app_search_pagi')]
+    public function searchPagi(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager, ApiDiscogsService $apiDiscogsService, string $S_type = 'master'): JsonResponse
+    {
+        $rechercheFruit = new RechercheFruit();
+        if ($request->get('fruitId') != null) {
+            $fruit = $entityManager->getRepository(Fruit::class)->find($request->get('fruitId'));
+            $fruitName = $fruit->getName();
+        }
+
+        if ($request->get('genreId') != null) {
+            $genre = $entityManager->getRepository(Genre::class)->find($request->get('genreId'));
+            $genreName = $genre->getName();
+        } else {
+            $genreName = "";
+        }
+
+        if ($request->get('formatId') != null) {
+            $format = $entityManager->getRepository(Format::class)->find($request->get('formatId'));
+            $formatName = $format->getName();
+
+        } else {
+            $formatName = "";
+        }
+
+        if ($request->get('artisteId') != null) {
+            $artiste = $entityManager->getRepository(Artiste::class)->find($request->get('artisteId'));
+            $artisteName = $artiste->getName();
+        } else {
+            $artisteName = "";
+        }
+
+        if ($request->get('type') != null) {
+            $typeName = $request->get('type');
+        }
+
+        if ($request->get('year') != null) {
+            $year = $request->get('year');
+        } else {
+            $year = "";
+        }
+        if ($request->get('page') != null) {
+            $page = $request->get('page');
+        } else {
+            $page = "";
+        }
+        $fruitName = "banane";
+        $typeName = "all";
+        $response = $apiDiscogsService->queryAll($fruitName, $genreName, $artisteName, $typeName,
+            $year, $formatName, $page);
+
+        try {
+            if ($response->getStatusCode() != 200) {
+                return [];
+            }
+            $reponses = $response->toArray()["results"];
+            $results = [];
+            foreach ($reponses as $response) {
+                if($response["type"] != "release") {
+                    $reponseUniform = array();
+                    $reponseUniform["id"] = $response["id"];
+                    $reponseUniform["title"] = $response["title"];
+                    $reponseUniform["coverImage"] = $response["thumb"];
+
+                    $reponseUniform["genres"] = isset($response["genre"]) ? $response["genre"] : "";
+                    $formats = isset($response["format"]) ? $response["format"] : array();
+                    if ($response["type"] != "artist") {
+                        for ($i = 0; $i < count($formats); ++$i) {
+                            $formats[$i] = str_replace('"', '', $formats[$i]);
+                        }
+                    }
+                    $reponseUniform["formatsArray"] = $formats;
+                    $reponseUniform["formats"] = json_encode($formats);
+                    $reponseUniform["type"] = isset($response["type"]) ? $response["type"] : "";
+                    $reponseUniform["year"] = isset($response["year"]) ? $response["year"] : "";
+                    $reponseUniform["label"] = isset($response["label"]) ? $response["label"][0] : "";
+                    $results[] = $reponseUniform;
+                }
+            }
+
+
+            return new JsonResponse($results);
+        } catch (ExceptionInterface $e) {
+            return "echec";
         }
     }
 
@@ -211,13 +305,13 @@ class HomeController extends AbstractController
     public function unlikeArtist(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $requestData = json_decode($request->getContent(), true); // Récupérer les données JSON en tant que tableau associatif
-        $entityManagerArtiste= $entityManager->getRepository(Artiste::class);
+        $entityManagerArtiste = $entityManager->getRepository(Artiste::class);
         $entityManagerUserArtiste = $entityManager->getRepository(UserArtiste::class);
 
         $id = !empty($requestData["id"]) ? $requestData["id"] : "";
         $artiste = $entityManagerArtiste->findOneBy(["discogsId" => $id]);
         $likedArtist = $entityManagerUserArtiste->findOneBy(["user" => $this->getUser(), "artiste" => $artiste]);
-        if($likedArtist != null) {
+        if ($likedArtist != null) {
             $entityManager->remove($likedArtist);
         }
         $entityManager->flush();
@@ -228,7 +322,7 @@ class HomeController extends AbstractController
     public function likeArtist(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $requestData = json_decode($request->getContent(), true); // Récupérer les données JSON en tant que tableau associatif
-        $entityManagerArtiste= $entityManager->getRepository(Artiste::class);
+        $entityManagerArtiste = $entityManager->getRepository(Artiste::class);
         $entityManagerUserArtiste = $entityManager->getRepository(UserArtiste::class);
         $entityManagerFruit = $entityManager->getRepository(Fruit::class);
 //        var_dump($requestData);
@@ -236,15 +330,14 @@ class HomeController extends AbstractController
         $action = $requestData["action"];
         $name = !empty($requestData["name"]) ? $requestData["name"] : "";
         $artiste = $entityManagerArtiste->findOneBy(["discogsId" => $id]);
-        if($action=="unlike") {
+        if ($action == "unlike") {
             $likedArtist = $entityManagerUserArtiste->findOneBy(["user" => $this->getUser(), "artiste" => $artiste]);
-            if($likedArtist != null) {
-               $entityManager->remove($likedArtist);
+            if ($likedArtist != null) {
+                $entityManager->remove($likedArtist);
             }
-        }
-        else {
+        } else {
             $fruit = !empty($requestData["fruit"]) ? $requestData["fruit"] : "";
-            if($artiste == null) {
+            if ($artiste == null) {
                 $artiste = new Artiste();
                 $artiste->setName($name);
                 $artiste->setDiscogsId($id);
@@ -256,7 +349,7 @@ class HomeController extends AbstractController
             }
 
             $likedArtist = $entityManagerUserArtiste->findOneBy(["user" => $this->getUser(), "artiste" => $artiste]);
-            if($likedArtist == null) {
+            if ($likedArtist == null) {
                 $likedArtist = new UserArtiste();
                 $likedArtist->setArtiste($artiste);
                 $likedArtist->setUser($this->getUser());
@@ -292,15 +385,15 @@ class HomeController extends AbstractController
         $response = $apiDiscogsService->queryGetMaster($id);
         try {
             $reponses = $response->toArray();
-        }catch (ExceptionInterface $e) {
+        } catch (ExceptionInterface $e) {
             return [];
         }
 
-        if($album == null) {
+        if ($album == null) {
             $album = new Album();
             $album->setTitle($reponses["title"]);
-            $album ->setYear($reponses["year"]);
-            $album ->setDiscogsId($reponses["id"]);
+            $album->setYear($reponses["year"]);
+            $album->setDiscogsId($reponses["id"]);
             $entityManager->persist($album);
 
             foreach ($reponses["artists"] as $artist) {
@@ -312,27 +405,27 @@ class HomeController extends AbstractController
             //ajouter albumArtiste
             foreach ($reponses["genres"] as $genre) {
                 $newGenre = $entityManager->getRepository(Genre::class)->findOneBy(["name" => $genre]);
-                if($newGenre == null){
+                if ($newGenre == null) {
                     $newGenre = new Genre();
                     $newGenre->setName($genre);
                     $entityManager->persist($newGenre);
                 }
-                if($entityManagerAlbumGenre->findOneBy(["album" => $album, "genre" => $newGenre]) == null) {
+                if ($entityManagerAlbumGenre->findOneBy(["album" => $album, "genre" => $newGenre]) == null) {
                     $albumGenre = new AlbumGenre();
                     $albumGenre->setAlbum($album);
                     $albumGenre->setGenre($newGenre);
                     $entityManager->persist($albumGenre);
                 }
             }
-            if($requestData["formats"] != null) {
+            if ($requestData["formats"] != null) {
                 foreach (json_decode($requestData["formats"]) as $format) {
                     $newFormat = $entityManager->getRepository(Format::class)->findOneBy(["name" => $format]);
-                    if($newFormat == null){
+                    if ($newFormat == null) {
                         $newFormat = new Format();
                         $newFormat->setName($format);
                         $entityManager->persist($newFormat);
                     }
-                    if($entityManagerAlbumFormat->findOneBy(["album" => $album, "format" => $newFormat]) == null) {
+                    if ($entityManagerAlbumFormat->findOneBy(["album" => $album, "format" => $newFormat]) == null) {
                         $albumFormat = new AlbumFormat();
                         $albumFormat->setAlbum($album);
                         $albumFormat->setFormat($newFormat);
@@ -341,8 +434,8 @@ class HomeController extends AbstractController
                 }
             }
         }
-        if($fruit!=null) {
-            if($entityManagerAlbumFruit->findOneBy(["album" => $album, "fruit" => $fruit]) == null) {
+        if ($fruit != null) {
+            if ($entityManagerAlbumFruit->findOneBy(["album" => $album, "fruit" => $fruit]) == null) {
                 $albumFruit = new AlbumFruit();
                 $albumFruit->setAlbum($album);
                 $albumFruit->setFruit($fruit);
@@ -351,7 +444,7 @@ class HomeController extends AbstractController
         }
 
         $likedAlbum = $entityManagerUserAlbum->findOneBy(["user" => $this->getUser(), "album" => $album]);
-        if($likedAlbum == null) {
+        if ($likedAlbum == null) {
             $likedAlbum = new UserAlbum();
             $likedAlbum->setAlbum($album);
             $likedAlbum->setUser($this->getUser());
@@ -372,9 +465,9 @@ class HomeController extends AbstractController
 
         $album = $entityManagerAlbum->findOneBy(["discogsId" => $id]);
 
-        if($action=="unlike") {
+        if ($action == "unlike") {
             $likedAlbum = $entityManagerUserAlbum->findOneBy(["user" => $this->getUser(), "album" => $album]);
-            if($likedAlbum != null) {
+            if ($likedAlbum != null) {
                 $entityManager->remove($likedAlbum);
             }
         }
