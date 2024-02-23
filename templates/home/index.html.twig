@@ -4,34 +4,39 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .container { margin: 1em auto; width: 95%;}
 </style>
 
-<div class="example-wrapper">
-    <h1 style="display: flex;"> <div style="padding-right: 10px;"> Mon espace </div> <div style="color: #555555;">Fruitify</div></h1>
-    Mes artistes
-    <ul>
-        {% for result in resultsArtistes %}
-            <li id="{{ result.id }}">
-                <button onclick="ajouter('{{ result.id}}', 'artist', '', '',);"><i class="fa-solid fa-trash"></i></button>
-                <div class="name">{{ result.name }}</div>
-{#                <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
-{#                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>#}
-                {#                <div class="format">{{ result.label }}</div>#}
-            </li>
-        {% endfor %}
-    </ul>
-    Mes albums
-    <ul>
-        {% for result in resultsAlbums %}
-            <li id="{{ result.id }}">
-                <button onclick="ajouter('{{ result.id}}', 'master', '', '',);"><i class="fa-solid fa-trash"></i></button>
-                <div class="name">{{ result.title }}</div>
-                {#                <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
-                {#                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>#}
-                {#                <div class="format">{{ result.label }}</div>#}
-            </li>
-        {% endfor %}
-    </ul></div>
+<div class="container">
+    <section class="d-flex flex-row justify-content-between">
+        <article class="w-50 p-4">
+            <h3> Mes artistes </h3>
+            <ul class="list-group">
+                {% for result in resultsArtistes %}
+                    <li id="{{ result.id }}" class="list-group-item d-flex justify-content-between align-items-center bg-transparent border border-0">
+                        <span class="name">{{ result.name }}</span>
+                        <button onclick="ajouter('{{ result.id}}', 'artist', '', '',);" class="btn btn-info"><i class="fa-solid fa-trash"></i></button>
+                        {#                         <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
+                        {# <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div> #}
+                        {# <div class="format">{{ result.label }}</div> #}
+                    </li>
+                {% endfor %}
+            </ul>
+        </article>
+        <article class="w-50 border-start p-4">
+            <h3> Mes albums </h3>
+            <ul class="list-group">
+                {% for result in resultsAlbums %}
+                    <li id="{{ result.id }}" class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0">
+                        <span class="name">{{ result.title }}</span>
+                        <button onclick="ajouter('{{ result.id}}', 'master', '', '',);" class="btn btn-info"><i class="fa-solid fa-trash"></i></button>
+                        {#                <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
+                        {#                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>#}
+                        {#                <div class="format">{{ result.label }}</div>#}
+                    </li>
+                {% endfor %}
+            </ul>
+        </article>
+    </section>
+</div>
 {% endblock %}

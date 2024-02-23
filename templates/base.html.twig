@@ -45,7 +45,142 @@
                     }).catch(error => console.error('Error:', error));
             }
 
+            function remplacerContenu(page, pages, results, fruit) {
+                var divPagination = document.getElementById("pagination");
+
+                while (divPagination.firstChild) {
+                    divPagination.removeChild(divPagination.firstChild);
+                }
+
+                if(page > 1) {
+                    var buttonElementPrecedent = document.createElement('button'); // Utilisez document.createElement
+                    buttonElementPrecedent.textContent = 'Page précédente'; // Ajoutez du texte au bouton
+                    buttonElementPrecedent.setAttribute('onclick', "chargerPageSuivante('precedent', " + (page - 1) + ", " + pages + ", '" + fruit + "')");
+                    buttonElementPrecedent.classList.add("btn", "btn-info", "m-1");
+                    divPagination.appendChild(buttonElementPrecedent);
+                }
+
+                if(page < pages) {
+                    var buttonElementSuivant = document.createElement('button'); // Utilisez document.createElement
+                    buttonElementSuivant.textContent = 'Page suivante'; // Ajoutez du texte au bouton
+                    buttonElementSuivant.setAttribute('onclick', "chargerPageSuivante('suivant', " + (page + 1) + ", " + pages + ", '" + fruit + "')");
+                    buttonElementSuivant.classList.add("btn", "btn-info", "m-1");
+                    divPagination.appendChild(buttonElementSuivant);
+                }
+                var divEtat = document.createElement('div');
+                divPagination.appendChild(divEtat)
+                divEtat.innerHTML = "" + page + "/" + pages;
+
+
+                var ulElement = document.querySelector('ul');
+                ulElement.innerHTML = ''; // Efface le contenu existant de la liste
+
+                results.forEach(function(result) {
+                    var liElement = document.createElement('li');
+                    liElement.id = result.id;
+
+                    var buttonElement = document.createElement('button');
+                    buttonElement.setAttribute('onclick', "ajouter('" + result.id + "', '" + result.type + "', '" + fruit + "', '" + result.formats + "')");
+                    buttonElement.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                    buttonElement.classList.add("btn", "btn-info", "m-1");
+                    liElement.appendChild(buttonElement);
+
+                    var coverElement = document.createElement('div');
+                    coverElement.classList.add('cover');
+                    coverElement.style.display = 'none';
+                    coverElement.textContent = result.coverImage;
+                    liElement.appendChild(coverElement);
+
+                    var imgElement = document.createElement('img');
+                    imgElement.style.height = '200px';
+                    imgElement.style.width = '200px';
+                    imgElement.style.maxHeight = '100%';
+                    imgElement.style.maxWidth = '100%';
+                    imgElement.src = result.coverImage;
+                    var imgDiv = document.createElement('div');
+                    imgDiv.appendChild(imgElement);
+                    liElement.appendChild(imgDiv);
+
+                    var nameElement = document.createElement('div');
+                    nameElement.classList.add('name');
+                    nameElement.textContent = result.title + (result.year ? ' - ' + result.year : '');
+                    liElement.appendChild(nameElement);
+
+                    if (result.genres.length > 0) {
+                        var genresElement = document.createElement('div');
+                        genresElement.classList.add('genres');
+                        genresElement.textContent = 'Genres : ';
+                        result.genres.forEach(function(genre) {
+                            var genreElement = document.createElement('div');
+                            genreElement.classList.add('genre');
+                            genreElement.textContent = genre;
+                            genresElement.appendChild(genreElement);
+                        });
+                        liElement.appendChild(genresElement);
+                    }
+
+                    if (result.formatsArray.length > 0) {
+                        var formatsElement = document.createElement('div');
+                        formatsElement.classList.add('formats');
+                        formatsElement.textContent = 'Formats disponibles : ';
+                        result.formatsArray.forEach(function(format) {
+                            var formatElement = document.createElement('div');
+                            formatElement.classList.add('format');
+                            formatElement.textContent = format;
+                            formatsElement.appendChild(formatElement);
+                        });
+                        liElement.appendChild(formatsElement);
+                    }
+
+                    ulElement.appendChild(liElement);
+                });
+            }
+
+            function chargerPageSuivante(sens, page, pages, fruit) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var results = JSON.parse(xhr.responseText);
+                            setTimeout(function() {
+                                // Afficher les résultats (vous pouvez appeler votre fonction pour afficher les résultats ici)
+                                remplacerContenu(page, pages, results, fruit);
+                            }, 2000); // 2000 millisecondes (2 secondes) de temporisation, ajustez selon vos besoins
+                        } else {
+                            console.error('Erreur lors du chargement de la page suivante : ' + xhr.status);
+                        }
+                    }
+                };
+
+                var url = '{{ path('app_search_pagi') }}'; // Assurez-vous que cela pointe vers votre route Symfony
+                // var params = 'page=' + page + "&genre"; // Ajoutez d'autres paramètres si nécessaire
+                var params = ''; // Initialisation de la chaîne de requête
+
+// Récupérer les paramètres actuels de la page
+                var queryString = window.location.search;
+                if (queryString) {
+                    params += queryString.substring(1); // Exclure le point d'interrogation initial
+                }
+                params += (params ? '&' : '') + 'page=' + page;
+
+// Ajouter le nouveau paramètre 'page'
+//                 if(sens === "precedent") {
+//                     page = page - 1;
+//                     params += (params ? '&' : '') + 'page=' + page;
+//                 }
+//                 else {
+//                     page = page + 1;
+//                     params += (params ? '&' : '') + 'page=' + page;
+//                 }
+
+                xhr.open('POST', url);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(params);
+            }
+
+
         </script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
         {% endblock %}
@@ -57,17 +192,22 @@
     </head>
     <body>
     {% if app.user %}
-        <header>
-            <a id="logout" href="{{ path('app_logout') }}">
-                <img src="{{ asset('../assets/img/logout.png') }}"/>
-            </a>
-            <nav>
-                <!-- Rajouter le bouton vers la bibliothèque -->
-                <img src="{{ asset('../assets/img/fruityfy.png') }}">
-            </nav>
+        <header class="d-flex flex-row justify-content-between m-4">
+            <div>
+                <img class="img-fluid" src="{{ asset('img/fruityfy.png') }}" alt="Fruityfy" style="max-height: 75px;">
+                <span> FuityFy </span>
+            </div>
+            <div>
+                <a class="btn btn-dark" href="{{ path('app_home') }}"> Home </a>
+                <a class="btn btn-dark" href="{{ path('app_search') }}"> Ajouter </a>
+                <a id="logout" href="{{ path('app_logout') }}">
+                    <img class="img-fluid" src="{{ asset('img/logout.png') }}" alt="Logout" style="max-width: 40px; max-height: 40px;">
+                </a>
+            </div>
         </header>
     {% endif %}
-        {% block body %}
-        {% endblock %}
+    {% block body %}
+    {% endblock %}
     </body>
+
 </html>

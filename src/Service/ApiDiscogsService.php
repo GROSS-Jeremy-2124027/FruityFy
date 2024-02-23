@@ -41,7 +41,7 @@ private $apiSecret;
     /**
      * @throws TransportExceptionInterface
      */
-    public function queryAll($fruit, $genre = '', $artiste='', $type="all", $year='', $format='', $I_page = 1, $perPage = 8): \Symfony\Contracts\HttpClient\ResponseInterface
+    public function queryAll($fruit, $genre = '', $artiste='', $type="all", $year='', $format='', $I_page = 1, $perPage = 20): \Symfony\Contracts\HttpClient\ResponseInterface
     {
         $client = HttpClient::create();
         return $client->request('GET', $this->getUrlApi() . '/database/search', [
