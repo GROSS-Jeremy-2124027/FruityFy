@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 *{
     margin: 0;
     padding: 0;
     color: #fff;
     font-family: "Varela Round", sans-serif;
-}
+}*/
 
 body {
     background-color: #000;
 }
 
-header{
+/*header{
     width: 100vw;
     height: 100px;
     display: flex;
@@ -69,16 +69,16 @@ nav>img{
     top: 0;
     left: 0;
     margin: 20px;
-}
+}*/
 
-#divider-login{
+#divider{
     width: 8vw;
     height: 10px;
     background-color: #59d2fe;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
-
+/*
 #logo{
     position: fixed;
     top: 0;
@@ -119,4 +119,4 @@ button {
 }
 #registration-link{
     font-size: 1em;
-}
+} */

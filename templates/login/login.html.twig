@@ -3,45 +3,55 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <div class="login-container">
-        <div id="label-connection" >
+    <div class="login-container d-flex justify-content-between align-items-center">
+        <div id="label-connection" class="text-light ms-5">
             <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-            <div id="divider-login"></div>
+            <div id="divider"></div>
         </div>
+        <img id="logo" src="{{ asset('img/fruityfy.png') }}" alt="logo fruityfy" class="img-fluid me-5" style="max-width: 150px;">
+    </div>
 
-        <img id="logo" src="" alt="logo fruityfy"/>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4 border border-info p-4 rounded mt-5">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
 
-            {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                <div class="mb-4">
+                    <label for="email" class="form-label text-light">Email</label>
+                    <input type="email" class="form-control border-success" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required>
                 </div>
-            {% endif %}
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
-                <input type="email" class="form-control" value="{{ last_username }}" name="_username" id="username" autocomplete="email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required autofocus>
-            </div>
+                <div class="mb-4">
+                    <label for="Mot de passe" class="form-label text-light">Mot de passe</label>
+                    <input type="password" class="form-control" value="{{ last_username }}" name="_password" id="password" autocomplete="current-password" required>
+                </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-default">Mot de passe</span>
-                <input type="password" class="form-control" value="{{ last_username }}" name="_password" id="password" autocomplete="current-password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
-            </div>
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
+                <div class="text-center  mt-5">
+                    <button class="btn btn-lg btn-info text-light" type="submit">
+                        Connexion
+                    </button>
+                </div>
 
-            <button class="btn btn-lg btn-primary" type="submit">
-                Connexion
-            </button>
-
-            <span id="registration-link">Pas de compte ? <a href="{{ path('app_registration') }}"> S'inscrire</a></span>
-
-        </form>
+                <div class="text-center mt-5"> 
+                    <span id="registration-link" class="text-light">Pas de compte ? <a class="link-offset-2 link-underline link-underline-opacity-0 text-info" href="{{ path('app_registration') }}"> S'inscrire</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
     </div>
 {% endblock %}
