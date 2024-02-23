@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use SebastianBergmann\CodeCoverage\Report\Text;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,8 +17,8 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', TextType::class)
-            ->add('password', RepeatedType::class)
-            ->add('save', SubmitType::class, ['label' => 'Register'])
+            ->add('password', TextType::class)
+            ->add('save', SubmitType::class, ['label' => 'Inscription'])
         ;
     }
 

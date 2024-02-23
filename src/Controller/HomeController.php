@@ -15,7 +15,6 @@ use App\Entity\RechercheFruit;
 use App\Entity\UserAlbum;
 use App\Entity\UserArtiste;
 use App\Form\FruitFormType;
-use App\Form\PaginationFormType;
 use App\Service\ApiDiscogsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -95,19 +94,6 @@ class HomeController extends AbstractController
             $rechercheFruit->setYear($request->get('year'));
         }
 
-//        else {
-//            $genre = $entityManager->getRepository(Genre::class)->findOneBy(["name" => "pop"]);
-//            $rechercheFruit->setGenre($genre);
-//        }
-
-//        if($request->get('artistId') != null) {
-//            $artiste = $entityManager->getRepository(Artiste::class)->find($request->get('artistId'));
-//            $rechercheFruit->setArtiste($artiste);
-//        }
-//        else {
-//            $artiste = $entityManager->getRepository(Artiste::class)->findOneBy(["name" => "Ba"]);
-//            $rechercheFruit->setFruit($fruit);
-//        }
 
         $fruitForm = $this->createForm(FruitFormType::class, $rechercheFruit);
         $fruitForm->handleRequest($request);
@@ -117,31 +103,12 @@ class HomeController extends AbstractController
             $genreId =  !empty($rechercheFruit->getGenre()) ? $rechercheFruit->getGenre()->getId() : "";
             $formatId =  !empty($rechercheFruit->getFormat()) ? $rechercheFruit->getFormat()->getId() : "";
             $artisteId =  !empty($rechercheFruit->getArtiste()) ? $rechercheFruit->getArtiste()->getId() : "";
-//            $id = !empty($requestData["id"]) ? $requestData["id"] : "";
 
-//            $fruitId = $fruitForm->getData()->getFruit();
             return $this->redirectToRoute('app_search', ['fruitId'=>$fruit->getId(),
                 'genreId'=>$genreId, 'artisteId'=>$artisteId, 'type' => $rechercheFruit->getType(),
                 'year' => $rechercheFruit->getYear(), 'formatId' => $formatId]);
-//                'I_page' => $data['page']]);
         }
 
-//        if($fruitForm->isSubmitted()) {
-//            return $this->redirectToRoute('app_search', ['S_type' => $S_type,
-//                ]);
-//        }
-//        $fruit = $entityManager->getRepository(Fruit::class)->find($fruit);
-
-//        $paginationForm = $this->createForm(PaginationFormType::class);
-//        $paginationForm->handleRequest($request);
-//        $I_page = isset($_GET['I_page']) ? $I_page = $_GET['I_page'] : 1;
-//        // Par défaut, affichez la première page
-//        if ($paginationForm->isSubmitted()) {
-//            $data = $paginationForm->getData();
-//
-//            return $this->redirectToRoute('app_search', ['S_type' => $S_type,
-//                'I_page' => $data['page']]);
-//        }
         $genreName = isset($genre) ? $genre->getName() : "";
         $artisteName = isset($artiste) ? $artiste->getName() : "";
         $formatName = isset($format) ? $format->getName() : "";

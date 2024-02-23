@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="..." crossorigin="anonymous" />
-
         <script>
             function ajouter(id, type, fruit, formats = null) {
                 var liElement = document.getElementById(id);
@@ -40,13 +39,11 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            iconElement.classList.toggle('fa-plus');
+                            // iconElement.classList.toggle('fa-plus');
                             iconElement.classList.toggle('fa-trash');
                         }
                     }).catch(error => console.error('Error:', error));
             }
-
-
 
         </script>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
@@ -54,10 +51,23 @@
         {% endblock %}
 
         {% block javascripts %}
-{% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% block importmap %}{{ importmap('app') }}
+            {% endblock %}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    {% if app.user %}
+        <header>
+            <a id="logout" href="{{ path('app_logout') }}">
+                <img src="{{ asset('../assets/img/logout.png') }}"/>
+            </a>
+            <nav>
+                <!-- Rajouter le bouton vers la bibliothèque -->
+                <img src="{{ asset('../assets/img/fruityfy.png') }}">
+            </nav>
+        </header>
+    {% endif %}
+        {% block body %}
+        {% endblock %}
     </body>
 </html>
