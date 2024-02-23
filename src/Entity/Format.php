@@ -21,12 +21,16 @@ class Format
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: ReferenceFormat::class, mappedBy: 'format', orphanRemoval: true)]
-    private Collection $referenceFormats;
+    #[ORM\OneToMany(targetEntity: AlbumFormat::class, mappedBy: 'format', orphanRemoval: true)]
+    private Collection $albumFormats;
+
+    #[ORM\OneToMany(targetEntity: RechercheFruit::class, mappedBy: 'format')]
+    private Collection $rechercheFruits;
 
     public function __construct()
     {
-        $this->referenceFormats = new ArrayCollection();
+        $this->albumFormats = new ArrayCollection();
+        $this->rechercheFruits = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -54,29 +58,59 @@ class Format
     }
 
     /**
-     * @return Collection<int, ReferenceFormat>
+     * @return Collection<int, AlbumFormat>
      */
-    public function getReferenceFormats(): Collection
+    public function getAlbumFormats(): Collection
     {
-        return $this->referenceFormats;
+        return $this->albumFormats;
     }
 
-    public function addReferenceFormat(ReferenceFormat $referenceFormat): static
+    public function addAlbumFormat(AlbumFormat $albumFormat): static
     {
-        if (!$this->referenceFormats->contains($referenceFormat)) {
-            $this->referenceFormats->add($referenceFormat);
-            $referenceFormat->setFormat($this);
+        if (!$this->albumFormats->contains($albumFormat)) {
+            $this->albumFormats->add($albumFormat);
+            $albumFormat->setFormat($this);
         }
 
         return $this;
     }
 
-    public function removeReferenceFormat(ReferenceFormat $referenceFormat): static
+    public function removeAlbumFormat(AlbumFormat $albumFormat): static
     {
-        if ($this->referenceFormats->removeElement($referenceFormat)) {
+        if ($this->albumFormats->removeElement($albumFormat)) {
             // set the owning side to null (unless already changed)
-            if ($referenceFormat->getFormat() === $this) {
-                $referenceFormat->setFormat(null);
+            if ($albumFormat->getFormat() === $this) {
+                $albumFormat->setFormat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RechercheFruit>
+     */
+    public function getRechercheFruits(): Collection
+    {
+        return $this->rechercheFruits;
+    }
+
+    public function addRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if (!$this->rechercheFruits->contains($rechercheFruit)) {
+            $this->rechercheFruits->add($rechercheFruit);
+            $rechercheFruit->setFormat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if ($this->rechercheFruits->removeElement($rechercheFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($rechercheFruit->getFormat() === $this) {
+                $rechercheFruit->setFormat(null);
             }
         }
 

@@ -9,35 +9,29 @@
 </style>
 
 <div class="example-wrapper">
-    <h1 style="display: flex; justify-content: space-between"> <div> Recherche de références musicales By </div> <div style="color: #555555;">Fruitify</div></h1>
-    Liste des références
+    <h1 style="display: flex;"> <div style="padding-right: 10px;"> Mon espace </div> <div style="color: #555555;">Fruitify</div></h1>
+    Mes artistes
     <ul>
-        <li id="155655565565561">
-            <div class = "reference"> Nom Reference </div>
-            <div class="name"> PNL </div>
-            <div class="year" > 2023 </div>
-            <div class="genre"> rap </div>
-            <div class="format"> Vinyle </div>
-            <button onclick="ajouter('155655565565561');"><i class="fa-solid fa-plus"></i></button>
-        </li>
-
-        <li>
-            <div> Nom Reference </div>
-            <div> Artiste </div>
-            <div> Année </div>
-            <div> Genre </div>
-            <div> Format </div>
-            <button onclick="alert('test');"> Ajouter </button>
-        </li>
-
-        <li>
-            <div> Nom Reference </div>
-            <div> Artiste </div>
-            <div> Année </div>
-            <div> Genre </div>
-            <div> Format </div>
-            <button onclick="alert('test');"> Ajouter </button>
-        </li>
+        {% for result in resultsArtistes %}
+            <li id="{{ result.id }}">
+                <button onclick="ajouter('{{ result.id}}', 'artist', '', '',);"><i class="fa-solid fa-trash"></i></button>
+                <div class="name">{{ result.name }}</div>
+{#                <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
+{#                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>#}
+                {#                <div class="format">{{ result.label }}</div>#}
+            </li>
+        {% endfor %}
     </ul>
-</div>
+    Mes albums
+    <ul>
+        {% for result in resultsAlbums %}
+            <li id="{{ result.id }}">
+                <button onclick="ajouter('{{ result.id}}', 'master', '', '',);"><i class="fa-solid fa-trash"></i></button>
+                <div class="name">{{ result.title }}</div>
+                {#                <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
+                {#                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>#}
+                {#                <div class="format">{{ result.label }}</div>#}
+            </li>
+        {% endfor %}
+    </ul></div>
 {% endblock %}

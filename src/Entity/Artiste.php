@@ -21,12 +21,23 @@ class Artiste
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: ReferenceArtiste::class, mappedBy: 'artiste')]
-    private Collection $referenceArtistes;
+    #[ORM\OneToMany(targetEntity: UserArtiste::class, mappedBy: 'artiste', orphanRemoval: true)]
+    private Collection $userArtistes;
+
+    #[ORM\Column(length: 255)]
+    private ?string $discogsId = null;
+
+    #[ORM\OneToMany(targetEntity: ArtisteFruit::class, mappedBy: 'artiste', orphanRemoval: true)]
+    private Collection $artisteFruits;
+
+    #[ORM\OneToMany(targetEntity: RechercheFruit::class, mappedBy: 'artiste')]
+    private Collection $rechercheFruits;
 
     public function __construct()
     {
-        $this->referenceArtistes = new ArrayCollection();
+        $this->userArtistes = new ArrayCollection();
+        $this->artisteFruits = new ArrayCollection();
+        $this->rechercheFruits = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -52,31 +63,102 @@ class Artiste
 
         return $this;
     }
-
     /**
-     * @return Collection<int, ReferenceArtiste>
+     * @return Collection<int, UserArtiste>
      */
-    public function getReferenceArtistes(): Collection
+    public function getUserArtistes(): Collection
     {
-        return $this->referenceArtistes;
+        return $this->userArtistes;
     }
 
-    public function addReferenceArtiste(ReferenceArtiste $referenceArtiste): static
+    public function addUserArtiste(UserArtiste $userArtiste): static
     {
-        if (!$this->referenceArtistes->contains($referenceArtiste)) {
-            $this->referenceArtistes->add($referenceArtiste);
-            $referenceArtiste->setArtiste($this);
+        if (!$this->userArtistes->contains($userArtiste)) {
+            $this->userArtistes->add($userArtiste);
+            $userArtiste->setArtiste($this);
         }
 
         return $this;
     }
 
-    public function removeReferenceArtiste(ReferenceArtiste $referenceArtiste): static
+    public function removeUserArtiste(UserArtiste $userArtiste): static
     {
-        if ($this->referenceArtistes->removeElement($referenceArtiste)) {
+        if ($this->userArtistes->removeElement($userArtiste)) {
             // set the owning side to null (unless already changed)
-            if ($referenceArtiste->getArtiste() === $this) {
-                $referenceArtiste->setArtiste(null);
+            if ($userArtiste->getArtiste() === $this) {
+                $userArtiste->setArtiste(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDiscogsId(): ?string
+    {
+        return $this->discogsId;
+    }
+
+    public function setDiscogsId(string $discogsId): static
+    {
+        $this->discogsId = $discogsId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtisteFruit>
+     */
+    public function getArtisteFruits(): Collection
+    {
+        return $this->artisteFruits;
+    }
+
+    public function addArtisteFruit(ArtisteFruit $artisteFruit): static
+    {
+        if (!$this->artisteFruits->contains($artisteFruit)) {
+            $this->artisteFruits->add($artisteFruit);
+            $artisteFruit->setArtiste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArtisteFruit(ArtisteFruit $artisteFruit): static
+    {
+        if ($this->artisteFruits->removeElement($artisteFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($artisteFruit->getArtiste() === $this) {
+                $artisteFruit->setArtiste(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RechercheFruit>
+     */
+    public function getRechercheFruits(): Collection
+    {
+        return $this->rechercheFruits;
+    }
+
+    public function addRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if (!$this->rechercheFruits->contains($rechercheFruit)) {
+            $this->rechercheFruits->add($rechercheFruit);
+            $rechercheFruit->setArtiste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
+    {
+        if ($this->rechercheFruits->removeElement($rechercheFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($rechercheFruit->getArtiste() === $this) {
+                $rechercheFruit->setArtiste(null);
             }
         }
 

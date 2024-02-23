@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: LabelRepository::class)]
@@ -16,17 +17,18 @@ class Label
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['label:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Reference::class, mappedBy: 'idLabel')]
-    private Collection $referencesList;
+    #[ORM\OneToMany(targetEntity: AlbumLabel::class, mappedBy: 'label', orphanRemoval: true)]
+    private Collection $albumLabels;
 
     public function __construct()
     {
-        $this->referencesList = new ArrayCollection();
+        $this->albumLabels = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -54,29 +56,29 @@ class Label
     }
 
     /**
-     * @return Collection<Uuid, Reference>
+     * @return Collection<int, AlbumLabel>
      */
-    public function getReferencesList(): Collection
+    public function getAlbumLabels(): Collection
     {
-        return $this->referencesList;
+        return $this->albumLabels;
     }
 
-    public function addReferencesList(Reference $referencesList): static
+    public function addAlbumLabel(AlbumLabel $albumLabel): static
     {
-        if (!$this->referencesList->contains($referencesList)) {
-            $this->referencesList->add($referencesList);
-            $referencesList->setIdLabel($this);
+        if (!$this->albumLabels->contains($albumLabel)) {
+            $this->albumLabels->add($albumLabel);
+            $albumLabel->setLabel($this);
         }
 
         return $this;
     }
 
-    public function removeReferencesList(Reference $referencesList): static
+    public function removeAlbumLabel(AlbumLabel $albumLabel): static
     {
-        if ($this->referencesList->removeElement($referencesList)) {
+        if ($this->albumLabels->removeElement($albumLabel)) {
             // set the owning side to null (unless already changed)
-            if ($referencesList->getIdLabel() === $this) {
-                $referencesList->setIdLabel(null);
+            if ($albumLabel->getLabel() === $this) {
+                $albumLabel->setLabel(null);
             }
         }
 
