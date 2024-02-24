@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -27,8 +28,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+   
+
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 8, minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères")]
+    #[Assert\Regex(
+         pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\S]{8,}$/',
+         message: 'Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.'
+    )]
+    #[ORM\Column(length: 255)]
     private ?string $password = null;
+
+    /** juste un champ, il n'est pas dans la base de données */
+    // #[Assert\EqualTo(propertyPath: "password", message: "il faut les mêmes mots de passe dans les deux champs")]
+    // public ?string $confirmPassword;
 
     #[ORM\OneToMany(targetEntity: UserArtiste::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $userArtistes;
