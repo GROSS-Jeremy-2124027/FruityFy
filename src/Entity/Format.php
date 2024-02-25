@@ -78,7 +78,6 @@ class Format
     public function removeAlbumFormat(AlbumFormat $albumFormat): static
     {
         if ($this->albumFormats->removeElement($albumFormat)) {
-            // set the owning side to null (unless already changed)
             if ($albumFormat->getFormat() === $this) {
                 $albumFormat->setFormat(null);
             }
@@ -108,7 +107,6 @@ class Format
     public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
     {
         if ($this->rechercheFruits->removeElement($rechercheFruit)) {
-            // set the owning side to null (unless already changed)
             if ($rechercheFruit->getFormat() === $this) {
                 $rechercheFruit->setFormat(null);
             }

@@ -76,7 +76,6 @@ class Label
     public function removeAlbumLabel(AlbumLabel $albumLabel): static
     {
         if ($this->albumLabels->removeElement($albumLabel)) {
-            // set the owning side to null (unless already changed)
             if ($albumLabel->getLabel() === $this) {
                 $albumLabel->setLabel(null);
             }

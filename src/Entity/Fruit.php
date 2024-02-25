@@ -82,7 +82,6 @@ class Fruit
     public function removeAlbumFruit(AlbumFruit $albumFruit): static
     {
         if ($this->albumFruits->removeElement($albumFruit)) {
-            // set the owning side to null (unless already changed)
             if ($albumFruit->getFruit() === $this) {
                 $albumFruit->setFruit(null);
             }
@@ -112,7 +111,6 @@ class Fruit
     public function removeArtisteFruit(ArtisteFruit $artisteFruit): static
     {
         if ($this->artisteFruits->removeElement($artisteFruit)) {
-            // set the owning side to null (unless already changed)
             if ($artisteFruit->getFruit() === $this) {
                 $artisteFruit->setFruit(null);
             }
@@ -142,7 +140,6 @@ class Fruit
     public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
     {
         if ($this->rechercheFruits->removeElement($rechercheFruit)) {
-            // set the owning side to null (unless already changed)
             if ($rechercheFruit->getFruit() === $this) {
                 $rechercheFruit->setFruit(null);
             }

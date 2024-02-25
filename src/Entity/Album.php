@@ -163,7 +163,6 @@ class Album
     public function removeAlbumFormat(AlbumFormat $albumFormat): static
     {
         if ($this->albumFormats->removeElement($albumFormat)) {
-            // set the owning side to null (unless already changed)
             if ($albumFormat->getAlbum() === $this) {
                 $albumFormat->setAlbum(null);
             }
@@ -193,7 +192,6 @@ class Album
     public function removeAlbumFruit(AlbumFruit $albumFruit): static
     {
         if ($this->albumFruits->removeElement($albumFruit)) {
-            // set the owning side to null (unless already changed)
             if ($albumFruit->getAlbum() === $this) {
                 $albumFruit->setAlbum(null);
             }
@@ -223,7 +221,6 @@ class Album
     public function removeUserAlbum(UserAlbum $userAlbum): static
     {
         if ($this->userAlbums->removeElement($userAlbum)) {
-            // set the owning side to null (unless already changed)
             if ($userAlbum->getAlbum() === $this) {
                 $userAlbum->setAlbum(null);
             }

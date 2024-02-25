@@ -21,8 +21,6 @@ class FixtureTest extends Fixture
 {
     public function load(EntityManagerInterface|ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $artiste = new Artiste();
         $artiste->setName("pnl");
         $manager->persist($artiste);

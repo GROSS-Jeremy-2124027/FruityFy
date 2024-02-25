@@ -84,7 +84,6 @@ class Artiste
     public function removeUserArtiste(UserArtiste $userArtiste): static
     {
         if ($this->userArtistes->removeElement($userArtiste)) {
-            // set the owning side to null (unless already changed)
             if ($userArtiste->getArtiste() === $this) {
                 $userArtiste->setArtiste(null);
             }
@@ -126,7 +125,6 @@ class Artiste
     public function removeArtisteFruit(ArtisteFruit $artisteFruit): static
     {
         if ($this->artisteFruits->removeElement($artisteFruit)) {
-            // set the owning side to null (unless already changed)
             if ($artisteFruit->getArtiste() === $this) {
                 $artisteFruit->setArtiste(null);
             }
@@ -156,7 +154,6 @@ class Artiste
     public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
     {
         if ($this->rechercheFruits->removeElement($rechercheFruit)) {
-            // set the owning side to null (unless already changed)
             if ($rechercheFruit->getArtiste() === $this) {
                 $rechercheFruit->setArtiste(null);
             }

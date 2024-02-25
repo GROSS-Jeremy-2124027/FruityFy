@@ -75,7 +75,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -133,7 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeUserArtiste(UserArtiste $userArtiste): static
     {
         if ($this->userArtistes->removeElement($userArtiste)) {
-            // set the owning side to null (unless already changed)
             if ($userArtiste->getUser() === $this) {
                 $userArtiste->setUser(null);
             }
@@ -163,7 +161,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeUserAlbum(UserAlbum $userAlbum): static
     {
         if ($this->userAlbums->removeElement($userAlbum)) {
-            // set the owning side to null (unless already changed)
             if ($userAlbum->getUser() === $this) {
                 $userAlbum->setUser(null);
             }

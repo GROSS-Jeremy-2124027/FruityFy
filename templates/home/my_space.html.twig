@@ -32,11 +32,9 @@
                     {% endfor %}
                 {% endif %}
 
-{#                <div class="format">{{ result.label }}</div>#}
             </li>
         {% endfor %}
     </ul>
-    {# Formulaire de pagination #}
     {{ form_start(paginationForm) }}
     {{ form_widget(paginationForm.page) }}
     <button type="submit">Page suivante</button>

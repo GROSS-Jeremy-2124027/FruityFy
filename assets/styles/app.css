@@ -11,66 +11,6 @@ body {
     background-color: #000;
 }
 
-/*header{*/
-/*    width: 100vw;*/
-/*    height: 100px;*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    border-bottom: solid 2px #59d2fe;*/
-/*    box-sizing: border-box;*/
-/*    border-bottom-left-radius: 10px;*/
-/*    border-bottom-right-radius: 10px;*/
-/*}*/
-
-/*#logout{*/
-/*    text-decoration: none;*/
-/*    padding: 5px;*/
-/*    margin-left: 20px;*/
-/*    transition: ease 0.5s;*/
-/*    border-radius: 5px;*/
-/*    content: "\E879";*/
-/*    color: #fff;*/
-/*}*/
-
-/*#logout>img{*/
-/*    width: 40px;*/
-/*}*/
-
-/*nav{*/
-/*    margin-right: 20px;*/
-/*}*/
-
-/*nav>img{*/
-/*    width: 80px;*/
-/*}*/
-
-/*#logout:hover {*/
-/*    background-color: rgba(255, 255, 255, 0.2);*/
-/*}*/
-
-/*.login-container{*/
-/*    width: 100vw;*/
-/*    height: 100vh;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*}*/
-
-/*.input-group{*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*}*/
-
-/*#label-connection{*/
-/*    position: fixed;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    margin: 20px;*/
-/*}*/
-
 #divider-login{
     width: 8vw;
     height: 10px;
@@ -79,44 +19,6 @@ body {
     border-bottom-right-radius: 10px;
 }
 
-/*#logo{*/
-/*    position: fixed;*/
-/*    top: 0;*/
-/*    right: 0;*/
-/*    margin: 20px;*/
-/*}*/
-
-/*form{*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    border: solid 2px #59d2fe;*/
-/*    border-radius: 20px;*/
-/*    padding: 40px;*/
-/*}*/
-
-/*span, label{*/
-/*    font-size: 1.2em;*/
-/*}*/
-
-/*input{*/
-/*    margin: 20px 0;*/
-/*    color: #000;*/
-/*    padding: 10px;*/
-/*    border-radius: 5px;*/
-/*    border: none;*/
-/*}*/
-
-/*button {*/
-/*    margin: 20px 0;*/
-/*    color: #000;*/
-/*    padding: 10px 20px;*/
-/*    border-radius: 10px;*/
-/*    background-color: #59d2fe;*/
-/*    border: none;*/
-/*    font-size: 1.2em;*/
-/*}*/
 #registration-link{
     font-size: 1em;
 }

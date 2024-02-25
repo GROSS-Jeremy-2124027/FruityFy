@@ -23,13 +23,9 @@
                     </div>
                 {% endif %}
 
-                <!-- Label et input pour l'email' -->
-
                 <div class="mb-4">
                     {{ form_row(form.email, {'label': 'Email', 'label_attr': {'class': 'text-light form-label'}, 'attr': {'class': 'form-control mb-4'}}) }}
                 </div>
-
-                <!-- Label et input pour le mot de passe -->
 
                 <div class="mb-4">
                     {{ form_row(form.password.first, {'label': 'Mot de passe', 'label_attr': {'class': 'text-light form-label'}, 'attr': {'class': 'form-control'}}) }}
@@ -51,8 +47,6 @@
                 <div class="text-center mt-5">
                     <span id="login-link" class="text-light">Déja un compte ? <a class="link-offset-2 link-underline link-underline-opacity-0 text-info" href="{{ path('app_login') }}"> Se connecter</a></span>
                 </div>
-
-
 
                 {{ form_end(form) }}
             </div>

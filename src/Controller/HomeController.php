@@ -145,7 +145,7 @@ class HomeController extends AbstractController
 
             return $this->render('home/liste_search.html.twig', [
                 'controller_name' => 'HomeController', 'results' => $results, 'fruit' => $fruit->getName(), 'entity' => 'artist',
-                'fruitForm' => $fruitForm->createView(), 'page' => $pagination['page'], 'pages' => $pagination['pages']// Passez la page en param
+                'fruitForm' => $fruitForm->createView(), 'page' => $pagination['page'], 'pages' => $pagination['pages']
 
             ]);
         } catch (ExceptionInterface $e) {

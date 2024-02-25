@@ -12,10 +12,6 @@
         .container { flex-direction: column }
 
         li { width: 200px }
-        /*img{*/
-        /*    width: 15vw !important;*/
-        /*    height: 15vw !important;*/
-        /*}*/
     }
 </style>
 
@@ -48,24 +44,16 @@
                     {% endif %}
                     <span class="name">{{ result.title }} {% if result.year %} - {{ result.year }} {% endif %}</span>
                     {% if  result.genres|length > 0 %}
-{#                        <span style="text-decoration: underline">#}
-{#                            Genres :#}
-{#                        </span>#}
                         {% for genre in result.genres %}
                             <span class="genre text-info">{{ genre }}</span>
                         {% endfor %}
                         <br/>
                     {% endif %}
                     {% if result.formatsArray|length > 0 %}
-{#                        <span style="text-decoration: underline">#}
-{#                            Formats disponibles :#}
-{#                        </span>#}
                         {% for format in result.formatsArray %}
                             <span class="format text-info-emphasis">{{ format }}</span>
                         {% endfor %}
                     {% endif %}
-
-                    {#                <div class="format">{{ result.label }}</div>#}
                 </li>
             {% endfor %}
         </ul>
@@ -79,11 +67,5 @@
             <div id="etatPagination"> {{ page }} / {{ pages }} </div>
         </div>
     </section>
-
-{#    #}{# Formulaire de pagination #}
-{#    {{ form_start(paginationForm) }}#}
-{#    {{ form_widget(paginationForm.page) }}#}
-{#    <button type="submit">Page suivante</button>#}
-{#    {{ form_end(paginationForm) }}#}
 </div>
 {% endblock %}

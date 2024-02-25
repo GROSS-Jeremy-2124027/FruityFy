@@ -16,9 +16,6 @@
                     <li id="{{ result.id }}" class="list-group-item d-flex justify-content-between align-items-center bg-transparent border border-0">
                         <span class="name">{{ result.name }}</span>
                         <button onclick="ajouter('{{ result.id}}', 'artist', '', '',);" class="btn btn-info"><i class="fa-solid fa-trash"></i></button>
-                        {#                         <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
-                        {# <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div> #}
-                        {# <div class="format">{{ result.label }}</div> #}
                     </li>
                 {% endfor %}
             </ul>
@@ -30,9 +27,6 @@
                     <li id="{{ result.id }}" class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0">
                         <span class="name">{{ result.title }}</span>
                         <button onclick="ajouter('{{ result.id}}', 'master', '', '',);" class="btn btn-info"><i class="fa-solid fa-trash"></i></button>
-                        {#                <div style="display: none" class="cover">{{ result.coverImage }}</div>#}
-                        {#                <div style="height: 200px; width: 200px"><img style="max-height: 100%; max-width: 100%" src="{{ result.coverImage }}"></div>#}
-                        {#                <div class="format">{{ result.label }}</div>#}
                     </li>
                 {% endfor %}
             </ul>

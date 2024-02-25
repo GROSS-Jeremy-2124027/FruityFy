@@ -79,7 +79,6 @@ class Genre
     public function removeAlbumGenre(AlbumGenre $albumGenre): static
     {
         if ($this->albumGenres->removeElement($albumGenre)) {
-            // set the owning side to null (unless already changed)
             if ($albumGenre->getGenre() === $this) {
                 $albumGenre->setGenre(null);
             }
@@ -109,7 +108,6 @@ class Genre
     public function removeRechercheFruit(RechercheFruit $rechercheFruit): static
     {
         if ($this->rechercheFruits->removeElement($rechercheFruit)) {
-            // set the owning side to null (unless already changed)
             if ($rechercheFruit->getGenre() === $this) {
                 $rechercheFruit->setGenre(null);
             }
