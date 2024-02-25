@@ -35,15 +35,6 @@
         </article>
     </section>
     <section>
-        <div class="ms-4" id="pagination">
-            {% if page - 1 >= 1 %}
-                <button class="btn btn-info m-1" onclick="chargerPageSuivante('precedent', {{ page - 1}} , {{ pages }}, '{{ fruit }}')">Page précédente</button> <!--ajouter -->
-            {% endif %}
-            {% if page + 1 <= pages %}
-                <button class="btn btn-info m-1" onclick="chargerPageSuivante('suivant', {{ page + 1}} , {{ pages }}, '{{ fruit }}')">Page suivante</button> <!--ajouter -->
-            {% endif %}
-            <div id="etatPagination"> {{ page }} / {{ pages }} </div>
-        </div>
         <ul class="d-flex flex-row justify-content-center flex-wrap">
             {% for result in results %}
                 <li id="{{ result.id }}" class="p-2 d-flex flex-column">
@@ -78,6 +69,15 @@
                 </li>
             {% endfor %}
         </ul>
+        <div id="pagination">
+                {% if page - 1 >= 1 %}
+                    <button class="btn btn-info m-1" onclick="chargerPageSuivante('precedent', {{ page - 1}} , {{ pages }}, '{{ fruit }}')">Page précédente</button> <!--ajouter -->
+                {% endif %}
+                {% if page + 1 <= pages %}
+                    <button class="btn btn-info m-1" onclick="chargerPageSuivante('suivant', {{ page + 1}} , {{ pages }}, '{{ fruit }}')">Page suivante</button> <!--ajouter -->
+                {% endif %}
+            <div id="etatPagination"> {{ page }} / {{ pages }} </div>
+        </div>
     </section>
 
 {#    #}{# Formulaire de pagination #}

@@ -12,13 +12,7 @@
 
                 if(type != "artist") {
                     var yearElement = liElement.querySelector('.year');
-                    // var genreElement = liElement.querySelector('.genre');
-                    // var formatElement = liElement.querySelector('.format');
-
-                    // Vérifier si les éléments existent avant d'accéder à leur contenu
                     var year = yearElement ? yearElement.textContent.trim() : '';
-                    // var genre = genreElement ? genreElement.textContent.trim() : '';
-                    // var format = formatElement ? formatElement.textContent.trim() : '';
                 }
 
                 var action;
@@ -32,14 +26,13 @@
                 fetch(`/like/${action}/${type}`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json' // Définir le type de contenu comme JSON
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ id: id, action: action, year: year, name: name, formats: formats, fruit: fruit}) // Convertir les données en JSON
+                    body: JSON.stringify({ id: id, action: action, year: year, name: name, formats: formats, fruit: fruit})
                 })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // iconElement.classList.toggle('fa-plus');
                             iconElement.classList.toggle('fa-trash');
                         }
                     }).catch(error => console.error('Error:', error));
@@ -53,16 +46,16 @@
                 }
 
                 if(page > 1) {
-                    var buttonElementPrecedent = document.createElement('button'); // Utilisez document.createElement
-                    buttonElementPrecedent.textContent = 'Page précédente'; // Ajoutez du texte au bouton
+                    var buttonElementPrecedent = document.createElement('button');
+                    buttonElementPrecedent.textContent = 'Page précédente';
                     buttonElementPrecedent.setAttribute('onclick', "chargerPageSuivante('precedent', " + (page - 1) + ", " + pages + ", '" + fruit + "')");
                     buttonElementPrecedent.classList.add("btn", "btn-info", "m-1");
                     divPagination.appendChild(buttonElementPrecedent);
                 }
 
                 if(page < pages) {
-                    var buttonElementSuivant = document.createElement('button'); // Utilisez document.createElement
-                    buttonElementSuivant.textContent = 'Page suivante'; // Ajoutez du texte au bouton
+                    var buttonElementSuivant = document.createElement('button');
+                    buttonElementSuivant.textContent = 'Page suivante';
                     buttonElementSuivant.setAttribute('onclick', "chargerPageSuivante('suivant', " + (page + 1) + ", " + pages + ", '" + fruit + "')");
                     buttonElementSuivant.classList.add("btn", "btn-info", "m-1");
                     divPagination.appendChild(buttonElementSuivant);
@@ -73,7 +66,7 @@
 
 
                 var ulElement = document.querySelector('ul');
-                ulElement.innerHTML = ''; // Efface le contenu existant de la liste
+                ulElement.innerHTML = '';
 
                 results.forEach(function(result) {
                     var liElement = document.createElement('li');
@@ -144,35 +137,22 @@
                         if (xhr.status === 200) {
                             var results = JSON.parse(xhr.responseText);
                             setTimeout(function() {
-                                // Afficher les résultats (vous pouvez appeler votre fonction pour afficher les résultats ici)
                                 remplacerContenu(page, pages, results, fruit);
-                            }, 2000); // 2000 millisecondes (2 secondes) de temporisation, ajustez selon vos besoins
+                            }, 2000);
                         } else {
                             console.error('Erreur lors du chargement de la page suivante : ' + xhr.status);
                         }
                     }
                 };
 
-                var url = '{{ path('app_search_pagi') }}'; // Assurez-vous que cela pointe vers votre route Symfony
-                // var params = 'page=' + page + "&genre"; // Ajoutez d'autres paramètres si nécessaire
-                var params = ''; // Initialisation de la chaîne de requête
+                var url = '{{ path('app_search_pagi') }}';
+                var params = '';
 
-// Récupérer les paramètres actuels de la page
                 var queryString = window.location.search;
                 if (queryString) {
-                    params += queryString.substring(1); // Exclure le point d'interrogation initial
+                    params += queryString.substring(1);
                 }
                 params += (params ? '&' : '') + 'page=' + page;
-
-// Ajouter le nouveau paramètre 'page'
-//                 if(sens === "precedent") {
-//                     page = page - 1;
-//                     params += (params ? '&' : '') + 'page=' + page;
-//                 }
-//                 else {
-//                     page = page + 1;
-//                     params += (params ? '&' : '') + 'page=' + page;
-//                 }
 
                 xhr.open('POST', url);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');

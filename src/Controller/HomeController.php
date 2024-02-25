@@ -30,7 +30,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
+    #[Route('/', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $entityManagerUserAlbum = $entityManager->getRepository(UserAlbum::class);
